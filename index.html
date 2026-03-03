@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IFW — Resultados Semana 17-24 Feb 2026</title>
+    <title>IFW — Resultados Febrero + Marzo 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -27,7 +27,6 @@
         }
         .slide.active { opacity: 1; visibility: visible; }
 
-        /* Dark slides */
         .slide-dark {
             background: #0D1B2A;
             background-image: radial-gradient(ellipse at 30% 50%, rgba(74,222,128,0.04) 0%, transparent 60%);
@@ -35,7 +34,6 @@
             justify-content: center;
         }
 
-        /* Light slides */
         .slide-light {
             background: #F5F0EB;
             color: #0D1B2A;
@@ -47,13 +45,11 @@
         .slide-light .subtitle { color: #64748B; }
         .slide-light .stat-label { color: #64748B; }
 
-        /* Logo */
         .logo-small {
             position: fixed; top: 30px; left: 30px;
             width: 50px; height: auto; z-index: 100;
         }
 
-        /* Section tag */
         .section-tag {
             display: inline-block;
             font-size: 13px; font-weight: 700;
@@ -119,6 +115,9 @@
         .stat-change.up { color: #4ADE80; }
         .stat-change.down { color: #f87171; }
         .slide-light .stat-change.up { color: #16a34a; }
+        .stat-change.neutral { color: #94A3B8; }
+
+        .stat-number.red { color: #f87171; }
 
         /* Campaign cards */
         .campaigns-list {
@@ -141,9 +140,7 @@
         .campaign-card .camp-metrics {
             display: flex; gap: 24px; align-items: center; flex-shrink: 0;
         }
-        .campaign-card .camp-metric {
-            text-align: center;
-        }
+        .campaign-card .camp-metric { text-align: center; }
         .campaign-card .camp-metric-value {
             font-size: 18px; font-weight: 900; color: #0D1B2A;
         }
@@ -155,6 +152,9 @@
             background: #0D1B2A; color: #4ADE80;
             padding: 6px 14px; border-radius: 50px;
             font-size: 15px; font-weight: 900; white-space: nowrap;
+        }
+        .campaign-card .camp-roas.bad {
+            background: #fef2f2; color: #ef4444;
         }
         .campaign-card .camp-roas.na {
             background: #f1f5f9; color: #94A3B8;
@@ -168,6 +168,12 @@
             background: #16a34a; color: white;
             font-size: 11px; font-weight: 700; padding: 3px 12px;
             border-radius: 50px; letter-spacing: 0.5px;
+        }
+        .camp-off {
+            opacity: 0.65;
+        }
+        .camp-off-tag {
+            font-size: 11px; color: #94A3B8; font-weight: 400;
         }
 
         /* Split section */
@@ -207,33 +213,74 @@
         .split-card.branding .split-detail { color: #94A3B8; }
         .split-card.ventas .split-detail { color: #64748B; }
 
-        /* Product bars */
-        .products-list {
-            width: 100%; max-width: 700px; margin-top: 20px;
-            display: flex; flex-direction: column; gap: 16px;
+        /* Week cards */
+        .week-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 16px; width: 100%; max-width: 950px; margin-top: 20px;
         }
-        .product-item {
-            display: flex; align-items: center; gap: 16px;
+        .week-card {
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.06);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border-radius: 20px; padding: 24px 20px;
+            text-align: center; transition: transform 0.3s ease;
         }
-        .product-name {
-            font-size: 14px; font-weight: 600; color: #0D1B2A;
-            width: 200px; flex-shrink: 0;
+        .week-card:hover { transform: translateY(-3px); }
+        .week-roas {
+            font-size: 32px; font-weight: 900;
+            padding: 8px 16px; border-radius: 14px;
+            margin-bottom: 14px; display: inline-block;
         }
-        .product-bar-bg {
-            flex: 1; height: 32px; background: #e8e3de;
-            border-radius: 8px; position: relative; overflow: hidden;
+        .week-roas.good { background: #dcfce7; color: #16a34a; }
+        .week-roas.warn { background: #fef3c7; color: #b45309; }
+        .week-roas.bad { background: #fee2e2; color: #dc2626; }
+        .week-dates {
+            font-size: 13px; font-weight: 700; color: #64748B;
+            margin-bottom: 12px; letter-spacing: 0.5px;
         }
-        .product-bar {
-            height: 100%; background: linear-gradient(90deg, #16a34a, #4ADE80);
-            border-radius: 8px; transition: width 1s ease;
+        .week-metric {
+            font-size: 14px; color: #0D1B2A; padding: 4px 0;
+            display: flex; justify-content: space-between;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .product-value {
-            font-size: 15px; font-weight: 900; color: #0D1B2A;
-            width: 80px; text-align: right; flex-shrink: 0;
+        .week-metric span { font-weight: 700; }
+        .week-pct {
+            font-size: 13px; font-weight: 700; margin-top: 10px;
+            padding: 4px 12px; border-radius: 50px; display: inline-block;
         }
-        .product-change {
-            font-size: 12px; font-weight: 700; width: 70px; flex-shrink: 0;
+        .week-pct.good { background: #dcfce7; color: #16a34a; }
+        .week-pct.warn { background: #fef3c7; color: #b45309; }
+        .week-pct.bad { background: #fee2e2; color: #dc2626; }
+
+        /* Compare grid */
+        .compare-grid {
+            width: 100%; max-width: 800px; margin-top: 20px;
         }
+        .compare-header {
+            display: grid; grid-template-columns: 1.2fr 1fr 1fr;
+            gap: 0; padding: 16px 24px; font-weight: 700;
+            font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
+            color: #64748B;
+        }
+        .compare-header .mar-head { color: #16a34a; }
+        .compare-row {
+            display: grid; grid-template-columns: 1.2fr 1fr 1fr;
+            gap: 0; padding: 16px 24px;
+            background: #ffffff; border-radius: 14px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(0,0,0,0.06);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            align-items: center;
+        }
+        .compare-label {
+            font-size: 14px; font-weight: 600; color: #64748B;
+        }
+        .compare-val {
+            font-size: 22px; font-weight: 900; color: #0D1B2A;
+            text-align: center;
+        }
+        .compare-val.green { color: #16a34a; }
+        .compare-val.red { color: #ef4444; }
 
         /* Funnel */
         .funnel {
@@ -270,27 +317,6 @@
             font-weight: 900;
         }
 
-        /* Sales desglose */
-        .desglose-row {
-            display: flex; gap: 12px; max-width: 900px; width: 100%;
-            margin-top: 16px; flex-wrap: wrap; justify-content: center;
-        }
-        .desglose-item {
-            background: #ffffff; border-radius: 14px;
-            padding: 16px 22px; text-align: center;
-            border: 1px solid rgba(0,0,0,0.06);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-            min-width: 150px; flex: 1;
-        }
-        .desglose-item .desglose-val {
-            font-size: 22px; font-weight: 900; color: #0D1B2A;
-        }
-        .desglose-item .desglose-val.discount { color: #f87171; }
-        .desglose-item .desglose-label {
-            font-size: 12px; color: #64748B; font-weight: 600;
-            text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;
-        }
-
         /* Insights list */
         .insights-list {
             max-width: 800px; width: 100%; margin-top: 20px;
@@ -314,6 +340,25 @@
             font-size: 16px; color: #0D1B2A; line-height: 1.5;
         }
         .insight-text strong { font-weight: 800; }
+
+        /* Hero pills */
+        .hero-pills {
+            display: flex; gap: 14px; margin-top: 30px; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .hero-pill {
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(74,222,128,0.1);
+            border: 1px solid rgba(74,222,128,0.25);
+            padding: 10px 20px; border-radius: 50px;
+            font-size: 14px; font-weight: 600; color: #4ADE80;
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+        .hero-pill:nth-child(1) { animation-delay: 0.2s; }
+        .hero-pill:nth-child(2) { animation-delay: 0.4s; }
+        .hero-pill:nth-child(3) { animation-delay: 0.6s; }
+        .hero-pill:nth-child(4) { animation-delay: 0.8s; }
 
         /* Navigation */
         .navigation {
@@ -347,34 +392,20 @@
             font-size: 12px; color: #64748B; z-index: 100;
         }
 
-        /* Hero pills (portada) */
-        .hero-pills {
-            display: flex; gap: 14px; margin-top: 30px; flex-wrap: wrap;
-            justify-content: center;
+        /* Big impact number for separador */
+        .impact-line {
+            font-size: 72px; font-weight: 900; letter-spacing: -3px;
+            line-height: 1.2; text-align: center;
         }
-        .hero-pill {
-            display: flex; align-items: center; gap: 8px;
-            background: rgba(74,222,128,0.1);
-            border: 1px solid rgba(74,222,128,0.25);
-            padding: 10px 20px; border-radius: 50px;
-            font-size: 14px; font-weight: 600; color: #4ADE80;
-            animation: fadeInUp 0.6s ease forwards;
-            opacity: 0;
+        .impact-sub {
+            font-size: 24px; color: #94A3B8; font-weight: 600;
+            margin-top: 12px; text-align: center;
         }
-        .hero-pill:nth-child(1) { animation-delay: 0.2s; }
-        .hero-pill:nth-child(2) { animation-delay: 0.4s; }
-        .hero-pill:nth-child(3) { animation-delay: 0.6s; }
-        .hero-pill:nth-child(4) { animation-delay: 0.8s; }
 
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-        }
-        .pulse { animation: pulse 2.5s infinite; }
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -389,12 +420,22 @@
             .stat-number { font-size: 28px; }
             .stat-card { padding: 18px 14px; }
 
+            .week-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .week-roas { font-size: 24px; }
+            .week-card { padding: 18px 14px; }
+
             .split-row { flex-direction: column; }
             .split-card .split-amount { font-size: 28px; }
 
             .campaigns-list { gap: 10px; }
             .campaign-card { flex-direction: column; align-items: flex-start; padding: 16px; gap: 10px; }
             .campaign-card .camp-metrics { flex-wrap: wrap; gap: 14px; }
+            .camp-best-tag { top: -10px; right: 12px; }
+
+            .compare-header { font-size: 11px; padding: 12px 16px; }
+            .compare-row { padding: 12px 16px; }
+            .compare-val { font-size: 18px; }
+            .compare-label { font-size: 13px; }
 
             .funnel { flex-direction: column; align-items: center; gap: 8px; }
             .funnel-step { flex-direction: row; gap: 12px; width: 100%; max-width: 350px; }
@@ -407,16 +448,14 @@
             .funnel-label { margin-top: 0; text-align: left; }
             .funnel-arrow { display: none; }
 
-            .product-item { flex-wrap: wrap; }
-            .product-name { width: 100%; }
-
-            .desglose-row { flex-direction: column; }
-
             .hero-pills { flex-direction: column; align-items: center; }
 
             .insights-list { gap: 10px; }
             .insight-item { padding: 16px; }
             .insight-text { font-size: 14px; }
+
+            .impact-line { font-size: 42px; letter-spacing: -2px; }
+            .impact-sub { font-size: 18px; }
 
             .logo-small { width: 36px; top: 20px; left: 20px; }
             .fullscreen-hint { display: none; }
@@ -429,228 +468,260 @@
     <div class="presentation">
         <img src="logo-la-real.png" alt="LA REAL" class="logo-small">
         <div class="progress" id="progress"></div>
-        <div class="slide-counter" id="slideCounter">1 / 8</div>
+        <div class="slide-counter" id="slideCounter">1 / 11</div>
         <div class="fullscreen-hint">Presiona F para pantalla completa</div>
 
         <!-- SLIDE 1: PORTADA (DARK) -->
         <div class="slide slide-dark active" id="slide1" data-theme="dark">
             <img src="logo-la-real.png" alt="LA REAL" style="width: 100px; margin-bottom: 16px; opacity: 0.8;">
             <div class="brand-name">IM FIT WORLD</div>
-            <h1>Resultados <span class="highlight">Semana 17–24</span> Feb 2026</h1>
-            <p class="subtitle">Reporte de rendimiento — Meta Ads + Shopify</p>
+            <h1>Resultados <span class="highlight">Febrero</span> + Arranque <span class="highlight">Marzo</span></h1>
+            <p class="subtitle">Reporte de rendimiento — Meta Ads + Shopify · 2026</p>
             <div class="hero-pills">
                 <div class="hero-pill">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-                    $2,2M invertidos
-                </div>
-                <div class="hero-pill">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                    128,8K alcance
-                </div>
-                <div class="hero-pill">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-                    $2,06M en ventas
+                    Feb: $11,8M ventas
                 </div>
                 <div class="hero-pill">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-                    7 campañas
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    Mar (3 días): $10,9M
+                </div>
+                <div class="hero-pill">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+                    ROAS: 1,2x → 3,9x
+                </div>
+                <div class="hero-pill">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                    $0 descuentos en marzo
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 2: PANORAMA GENERAL (LIGHT) -->
+        <!-- SLIDE 2: FEBRERO SHOPIFY (LIGHT) -->
         <div class="slide slide-light" id="slide2" data-theme="light">
-            <div class="section-tag">PANORAMA GENERAL</div>
-            <h2>Métricas <span class="highlight">clave</span> de la semana</h2>
+            <div class="section-tag">SHOPIFY &middot; FEBRERO</div>
+            <h2>Febrero cerró en <span class="highlight">$11,8M</span> netas</h2>
+            <p class="subtitle" style="margin-bottom: 10px;">Comparación vs enero 2026</p>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-number">$2,2M</div>
-                    <div class="stat-label">Inversión total</div>
+                    <div class="stat-number">$13,1M</div>
+                    <div class="stat-label">Ventas brutas</div>
+                    <div class="stat-change down">↓ 49% vs ene</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">244K</div>
+                    <div class="stat-number red">−$1,2M</div>
+                    <div class="stat-label">Descuentos</div>
+                    <div class="stat-change neutral">↓ 16%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$11,8M</div>
+                    <div class="stat-label">Ventas netas</div>
+                    <div class="stat-change down">↓ 50% vs ene</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">75</div>
+                    <div class="stat-label">Pedidos</div>
+                    <div class="stat-change down">↓ 28%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$158K</div>
+                    <div class="stat-label">Ticket promedio</div>
+                    <div class="stat-change down">↓ 33%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">0,27%</div>
+                    <div class="stat-label">Tasa de conversión</div>
+                    <div class="stat-change down">↓ 45%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: EVOLUCIÓN SEMANAL (LIGHT) -->
+        <div class="slide slide-light" id="slide3" data-theme="light">
+            <div class="section-tag">EVOLUCIÓN SEMANAL</div>
+            <h2>De caída a <span class="highlight">recuperación</span></h2>
+            <p class="subtitle" style="margin-bottom: 10px;">ROAS = Ventas Shopify / Inversión Meta</p>
+            <div class="week-grid">
+                <div class="week-card">
+                    <div class="week-roas good">2,34x</div>
+                    <div class="week-dates">FEB 1 – 7</div>
+                    <div class="week-metric">Ventas <span>$3,2M</span></div>
+                    <div class="week-metric">Inversión <span>$1,4M</span></div>
+                    <div class="week-metric">Pedidos <span>17</span></div>
+                    <div class="week-pct good">44,8% inv/venta</div>
+                </div>
+                <div class="week-card">
+                    <div class="week-roas bad">0,98x</div>
+                    <div class="week-dates">FEB 8 – 14</div>
+                    <div class="week-metric">Ventas <span>$2,5M</span></div>
+                    <div class="week-metric">Inversión <span>$2,7M</span></div>
+                    <div class="week-metric">Pedidos <span>14</span></div>
+                    <div class="week-pct bad">107,4% inv/venta</div>
+                </div>
+                <div class="week-card">
+                    <div class="week-roas bad">0,81x</div>
+                    <div class="week-dates">FEB 15 – 21</div>
+                    <div class="week-metric">Ventas <span>$2,3M</span></div>
+                    <div class="week-metric">Inversión <span>$3,0M</span></div>
+                    <div class="week-metric">Pedidos <span>15</span></div>
+                    <div class="week-pct bad">131,3% inv/venta</div>
+                </div>
+                <div class="week-card">
+                    <div class="week-roas warn">1,52x</div>
+                    <div class="week-dates">FEB 22 – 28</div>
+                    <div class="week-metric">Ventas <span>$3,8M</span></div>
+                    <div class="week-metric">Inversión <span>$2,7M</span></div>
+                    <div class="week-metric">Pedidos <span>29</span></div>
+                    <div class="week-pct warn">71,3% inv/venta</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: FEBRERO META ADS (LIGHT) -->
+        <div class="slide slide-light" id="slide4" data-theme="light">
+            <div class="section-tag">META ADS &middot; FEBRERO</div>
+            <h2><span class="highlight">$9,9M</span> invertidos en pauta</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">1,34M</div>
                     <div class="stat-label">Impresiones</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">128,8K</div>
-                    <div class="stat-label">Personas alcanzadas</div>
+                    <div class="stat-number">457K</div>
+                    <div class="stat-label">Alcance</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">7.867</div>
+                    <div class="stat-number">35.371</div>
                     <div class="stat-label">Clics totales</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">$9.120</div>
-                    <div class="stat-label">CPM promedio</div>
+                    <div class="stat-number">$7.369</div>
+                    <div class="stat-label">CPM</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">4,20%</div>
-                    <div class="stat-label">CTR promedio</div>
+                    <div class="stat-number">3,59%</div>
+                    <div class="stat-label">CTR</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$205</div>
+                    <div class="stat-label">CPC</div>
                 </div>
             </div>
-        </div>
-
-        <!-- SLIDE 3: INVERSIÓN BRANDING VS VENTAS (LIGHT) -->
-        <div class="slide slide-light" id="slide3" data-theme="light">
-            <div class="section-tag">INVERSIÓN</div>
-            <h2><span class="highlight">Branding</span> vs <span class="highlight">Ventas</span></h2>
-            <div class="split-row">
+            <div class="split-row" style="margin-top: 24px;">
                 <div class="split-card branding">
                     <div class="split-tag">BRANDING</div>
-                    <div class="split-amount">$523.609</div>
-                    <div class="split-pct">23,5% de la inversión</div>
+                    <div class="split-amount">$1,9M</div>
+                    <div class="split-pct">19% de inversión</div>
                     <div class="split-detail">
-                        1 campaña · Visitas al perfil<br>
-                        82.661 alcance · $4.557 CPM<br>
-                        6.060 clics · 6,14% CTR · <strong style="color:#4ADE80">$74 CPC</strong>
+                        Visitas al perfil<br>
+                        213.886 alcance · CPM $4.392<br>
+                        24.058 clics · <strong style="color:#4ADE80">CPC $70</strong>
                     </div>
                 </div>
                 <div class="split-card ventas">
                     <div class="split-tag">VENTAS</div>
-                    <div class="split-amount">$1.701.754</div>
-                    <div class="split-pct">76,5% de la inversión</div>
+                    <div class="split-amount">$8,0M</div>
+                    <div class="split-pct">81% de inversión</div>
                     <div class="split-detail">
-                        6 campañas activas<br>
-                        129.102 impresiones · 1.807 clics<br>
-                        Mejor ROAS: <strong style="color:#16a34a">1,74x</strong> (Beisbolera)
+                        7 campañas (3 desactivadas)<br>
+                        ROAS Meta atribuido: <strong style="color:#16a34a">0,82x</strong><br>
+                        Mejor campaña: Catálogos 1,26x
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 4: CAMPAÑAS DE VENTA (LIGHT) -->
-        <div class="slide slide-light" id="slide4" data-theme="light">
-            <div class="section-tag">CAMPAÑAS DE VENTA</div>
+        <!-- SLIDE 5: FEBRERO CAMPAÑAS (LIGHT) -->
+        <div class="slide slide-light" id="slide5" data-theme="light">
+            <div class="section-tag">CAMPAÑAS &middot; FEBRERO</div>
             <h2>Rendimiento por <span class="highlight">campaña</span></h2>
             <div class="campaigns-list">
-                <div class="campaign-card">
-                    <div class="camp-name">ABO Públicos · Nuevos Videos</div>
-                    <div class="camp-metrics">
-                        <div class="camp-metric">
-                            <div class="camp-metric-value">$753.117</div>
-                            <div class="camp-metric-label">Inversión</div>
-                        </div>
-                        <div class="camp-metric">
-                            <div class="camp-metric-value">$16.673</div>
-                            <div class="camp-metric-label">CPM</div>
-                        </div>
-                        <div class="camp-metric">
-                            <div class="camp-metric-value">632</div>
-                            <div class="camp-metric-label">Clics</div>
-                        </div>
-                        <div class="camp-metric">
-                            <div class="camp-metric-value">2,33%</div>
-                            <div class="camp-metric-label">CTR</div>
-                        </div>
-                        <div class="camp-roas">1,08x</div>
-                    </div>
-                </div>
-                <div class="campaign-card">
+                <div class="campaign-card camp-best">
+                    <div class="camp-best-tag">MAYOR INVERSIÓN</div>
                     <div class="camp-name">ABO Catálogos · IFW</div>
                     <div class="camp-metrics">
                         <div class="camp-metric">
-                            <div class="camp-metric-value">$548.625</div>
+                            <div class="camp-metric-value">$2,8M</div>
                             <div class="camp-metric-label">Inversión</div>
                         </div>
                         <div class="camp-metric">
-                            <div class="camp-metric-value">$15.305</div>
-                            <div class="camp-metric-label">CPM</div>
-                        </div>
-                        <div class="camp-metric">
-                            <div class="camp-metric-value">471</div>
+                            <div class="camp-metric-value">2.945</div>
                             <div class="camp-metric-label">Clics</div>
                         </div>
                         <div class="camp-metric">
-                            <div class="camp-metric-value">1,82%</div>
-                            <div class="camp-metric-label">CTR</div>
+                            <div class="camp-metric-value">24</div>
+                            <div class="camp-metric-label">Compras</div>
                         </div>
-                        <div class="camp-roas">1,17x</div>
+                        <div class="camp-roas">1,26x</div>
                     </div>
                 </div>
-                <div class="campaign-card camp-best">
-                    <div class="camp-best-tag">MEJOR ROAS</div>
-                    <div class="camp-name">Contenido Nuevo · Beisbolera + Videos</div>
+                <div class="campaign-card camp-off">
+                    <div class="camp-name">ABO Públicos · Nuevos Videos <span class="camp-off-tag">(desactivada)</span></div>
                     <div class="camp-metrics">
                         <div class="camp-metric">
-                            <div class="camp-metric-value">$134.074</div>
+                            <div class="camp-metric-value">$2,6M</div>
                             <div class="camp-metric-label">Inversión</div>
                         </div>
                         <div class="camp-metric">
-                            <div class="camp-metric-value">$10.754</div>
-                            <div class="camp-metric-label">CPM</div>
-                        </div>
-                        <div class="camp-metric">
-                            <div class="camp-metric-value">178</div>
+                            <div class="camp-metric-value">2.522</div>
                             <div class="camp-metric-label">Clics</div>
                         </div>
                         <div class="camp-metric">
-                            <div class="camp-metric-value">3,17%</div>
-                            <div class="camp-metric-label">CTR</div>
+                            <div class="camp-metric-value">12</div>
+                            <div class="camp-metric-label">Compras</div>
                         </div>
-                        <div class="camp-roas">1,74x</div>
+                        <div class="camp-roas bad">0,80x</div>
+                    </div>
+                </div>
+                <div class="campaign-card camp-off">
+                    <div class="camp-name">ABO Públicos · IFW <span class="camp-off-tag">(desactivada)</span></div>
+                    <div class="camp-metrics">
+                        <div class="camp-metric">
+                            <div class="camp-metric-value">$1,16M</div>
+                            <div class="camp-metric-label">Inversión</div>
+                        </div>
+                        <div class="camp-metric">
+                            <div class="camp-metric-value">3.535</div>
+                            <div class="camp-metric-label">Clics</div>
+                        </div>
+                        <div class="camp-metric">
+                            <div class="camp-metric-value">1</div>
+                            <div class="camp-metric-label">Compras</div>
+                        </div>
+                        <div class="camp-roas bad">0,08x</div>
                     </div>
                 </div>
                 <div class="campaign-card">
-                    <div class="camp-name">Kids SALE <span style="font-size:11px;color:#94A3B8;font-weight:400">(completada)</span></div>
+                    <div class="camp-name">Contenido Nuevo · Beisbolera + Videos</div>
                     <div class="camp-metrics">
                         <div class="camp-metric">
-                            <div class="camp-metric-value">$134.073</div>
+                            <div class="camp-metric-value">$687K</div>
                             <div class="camp-metric-label">Inversión</div>
                         </div>
                         <div class="camp-metric">
-                            <div class="camp-metric-value">$11.729</div>
-                            <div class="camp-metric-label">CPM</div>
-                        </div>
-                        <div class="camp-metric">
-                            <div class="camp-metric-value">192</div>
+                            <div class="camp-metric-value">1.069</div>
                             <div class="camp-metric-label">Clics</div>
                         </div>
                         <div class="camp-metric">
-                            <div class="camp-metric-value">2,30%</div>
-                            <div class="camp-metric-label">CTR</div>
+                            <div class="camp-metric-value">8</div>
+                            <div class="camp-metric-label">Compras</div>
                         </div>
-                        <div class="camp-roas">1,00x</div>
+                        <div class="camp-roas">1,39x</div>
                     </div>
                 </div>
                 <div class="campaign-card">
                     <div class="camp-name">Ventas Contenido Orgánico NY</div>
                     <div class="camp-metrics">
                         <div class="camp-metric">
-                            <div class="camp-metric-value">$98.057</div>
+                            <div class="camp-metric-value">$248K</div>
                             <div class="camp-metric-label">Inversión</div>
                         </div>
                         <div class="camp-metric">
-                            <div class="camp-metric-value">$5.195</div>
-                            <div class="camp-metric-label">CPM</div>
-                        </div>
-                        <div class="camp-metric">
-                            <div class="camp-metric-value">316</div>
+                            <div class="camp-metric-value">646</div>
                             <div class="camp-metric-label">Clics</div>
                         </div>
                         <div class="camp-metric">
-                            <div class="camp-metric-value">3,99%</div>
-                            <div class="camp-metric-label">CTR</div>
-                        </div>
-                        <div class="camp-roas na">— ROAS</div>
-                    </div>
-                </div>
-                <div class="campaign-card">
-                    <div class="camp-name">ABO Públicos · IFW</div>
-                    <div class="camp-metrics">
-                        <div class="camp-metric">
-                            <div class="camp-metric-value">$33.808</div>
-                            <div class="camp-metric-label">Inversión</div>
-                        </div>
-                        <div class="camp-metric">
-                            <div class="camp-metric-value">$6.362</div>
-                            <div class="camp-metric-label">CPM</div>
-                        </div>
-                        <div class="camp-metric">
-                            <div class="camp-metric-value">18</div>
-                            <div class="camp-metric-label">Clics</div>
-                        </div>
-                        <div class="camp-metric">
-                            <div class="camp-metric-value">1,37%</div>
+                            <div class="camp-metric-value">5,14%</div>
                             <div class="camp-metric-label">CTR</div>
                         </div>
                         <div class="camp-roas na">— ROAS</div>
@@ -659,159 +730,272 @@
             </div>
         </div>
 
-        <!-- SLIDE 5: VENTAS SHOPIFY (LIGHT) -->
-        <div class="slide slide-light" id="slide5" data-theme="light">
-            <div class="section-tag">VENTAS SHOPIFY</div>
-            <h2>La tienda generó <span class="highlight">$2.065.500</span></h2>
-            <p class="subtitle" style="margin-bottom: 20px;">Semana 17–24 de febrero · Comparación vs semana anterior</p>
-            <div class="desglose-row">
-                <div class="desglose-item">
-                    <div class="desglose-val">$2.658.500</div>
-                    <div class="desglose-label">Ventas brutas</div>
-                    <div class="stat-change down">↓ 20%</div>
-                </div>
-                <div class="desglose-item">
-                    <div class="desglose-val discount">−$716.000</div>
-                    <div class="desglose-label">Descuentos</div>
-                    <div class="stat-change down">↑ 190%</div>
-                </div>
-                <div class="desglose-item">
-                    <div class="desglose-val">$1.942.500</div>
-                    <div class="desglose-label">Ventas netas</div>
-                    <div class="stat-change down">↓ 37%</div>
-                </div>
-                <div class="desglose-item">
-                    <div class="desglose-val">$138.750</div>
-                    <div class="desglose-label">Ticket promedio</div>
-                    <div class="stat-change down">↓ 23%</div>
-                </div>
-            </div>
-            <h2 style="font-size:28px; margin-top:30px; margin-bottom: 10px;">Top <span class="highlight">productos</span></h2>
-            <div class="products-list">
-                <div class="product-item">
-                    <div class="product-name">Blusón Move Black</div>
-                    <div class="product-bar-bg"><div class="product-bar" style="width: 100%"></div></div>
-                    <div class="product-value">$285K</div>
-                    <div class="product-change" style="color:#64748B">—</div>
-                </div>
-                <div class="product-item">
-                    <div class="product-name">Crop Top Mesh Negro</div>
-                    <div class="product-bar-bg"><div class="product-bar" style="width: 84%"></div></div>
-                    <div class="product-value">$240K</div>
-                    <div class="product-change" style="color:#16a34a">↑ 100%</div>
-                </div>
-                <div class="product-item">
-                    <div class="product-name">Blusón Move Gris</div>
-                    <div class="product-bar-bg"><div class="product-bar" style="width: 73%"></div></div>
-                    <div class="product-value">$209K</div>
-                    <div class="product-change" style="color:#16a34a">↑ 57%</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SLIDE 6: FUNNEL DE CONVERSIÓN (LIGHT) -->
+        <!-- SLIDE 6: FEBRERO FUNNEL (LIGHT) -->
         <div class="slide slide-light" id="slide6" data-theme="light">
-            <div class="section-tag">CONVERSIÓN</div>
+            <div class="section-tag">CONVERSIÓN &middot; FEBRERO</div>
             <h2>Funnel de <span class="highlight">compra</span></h2>
-            <p class="subtitle" style="margin-bottom: 10px;">De sesiones a compras completadas</p>
+            <p class="subtitle" style="margin-bottom: 10px;">27.507 sesiones · Tasa de conversión: 0,27%</p>
             <div class="funnel">
                 <div class="funnel-step">
                     <div class="funnel-bar" style="height: 260px; min-height: 260px;">
-                        <div class="funnel-number">6.213</div>
+                        <div class="funnel-number">27.507</div>
                         <div class="funnel-pct">100%</div>
                     </div>
-                    <div class="funnel-label">Sesiones<br><span class="stat-change down" style="font-size:11px">↓ 32%</span></div>
+                    <div class="funnel-label">Sesiones<br><span class="stat-change down" style="font-size:11px">↓ 31%</span></div>
                 </div>
                 <div class="funnel-arrow">→</div>
                 <div class="funnel-step">
-                    <div class="funnel-bar" style="height: 160px; min-height: 160px;">
-                        <div class="funnel-number">117</div>
-                        <div class="funnel-pct">1,88%</div>
+                    <div class="funnel-bar" style="height: 130px; min-height: 130px;">
+                        <div class="funnel-number">533</div>
+                        <div class="funnel-pct">1,93%</div>
                     </div>
-                    <div class="funnel-label">Carrito<br><span class="stat-change down" style="font-size:11px">↓ 21%</span></div>
+                    <div class="funnel-label">Carrito<br><span class="stat-change down" style="font-size:11px">↓ 3%</span></div>
                 </div>
                 <div class="funnel-arrow">→</div>
                 <div class="funnel-step">
-                    <div class="funnel-bar" style="height: 110px; min-height: 110px;">
-                        <div class="funnel-number">43</div>
-                        <div class="funnel-pct">0,69%</div>
+                    <div class="funnel-bar" style="height: 85px; min-height: 85px;">
+                        <div class="funnel-number">184</div>
+                        <div class="funnel-pct">0,66%</div>
                     </div>
-                    <div class="funnel-label">Checkout<br><span class="stat-change up" style="font-size:11px">↑ 16%</span></div>
+                    <div class="funnel-label">Checkout<br><span class="stat-change down" style="font-size:11px">↓ 31%</span></div>
                 </div>
                 <div class="funnel-arrow">→</div>
                 <div class="funnel-step">
-                    <div class="funnel-bar" style="height: 70px; min-height: 70px;">
-                        <div class="funnel-number">14</div>
-                        <div class="funnel-pct">0,22%</div>
+                    <div class="funnel-bar" style="height: 55px; min-height: 55px;">
+                        <div class="funnel-number">75</div>
+                        <div class="funnel-pct">0,27%</div>
                     </div>
-                    <div class="funnel-label">Compras<br><span class="stat-change down" style="font-size:11px">↓ 18%</span></div>
+                    <div class="funnel-label">Compras<br><span class="stat-change down" style="font-size:11px">↓ 28%</span></div>
                 </div>
             </div>
             <div class="stats-grid stats-grid-2" style="margin-top: 30px; max-width: 500px;">
                 <div class="stat-card">
-                    <div class="stat-number" style="font-size:32px">36,8%</div>
+                    <div class="stat-number" style="font-size:32px">34,5%</div>
                     <div class="stat-label">Carrito → Checkout</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" style="font-size:32px">32,6%</div>
+                    <div class="stat-number" style="font-size:32px">40,8%</div>
                     <div class="stat-label">Checkout → Compra</div>
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 7: HALLAZGOS CLAVE (LIGHT) -->
-        <div class="slide slide-light" id="slide7" data-theme="light">
-            <div class="section-tag">HALLAZGOS</div>
-            <h2>Qué nos dicen <span class="highlight">los datos</span></h2>
-            <div class="insights-list">
-                <div class="insight-item">
-                    <div class="insight-icon green">✓</div>
-                    <div class="insight-text"><strong>Beisbolera + Videos = mejor ROAS (1,74x).</strong> El contenido nuevo con video genera el mejor retorno por peso invertido. Oportunidad de escalar esta campaña.</div>
+        <!-- SLIDE 7: SEPARADOR MARZO (DARK) -->
+        <div class="slide slide-dark" id="slide7" data-theme="dark">
+            <div class="section-tag" style="margin-bottom: 30px;">MARZO 2026</div>
+            <div class="impact-line">3 días.</div>
+            <div class="impact-line"><span class="highlight">$11 millones.</span></div>
+            <div class="impact-line">ROAS <span class="highlight">3,9x</span></div>
+            <div class="impact-sub">Marzo arrancó a otro nivel.</div>
+        </div>
+
+        <!-- SLIDE 8: MARZO RESULTADOS (LIGHT) -->
+        <div class="slide slide-light" id="slide8" data-theme="light">
+            <div class="section-tag">MARZO &middot; PRIMEROS 3 DÍAS</div>
+            <h2>En 3 días, el <span class="highlight">92%</span> de febrero</h2>
+            <p class="subtitle" style="margin-bottom: 10px;">Comparación: febrero completo (28 días) vs marzo (3 días)</p>
+            <div class="compare-grid">
+                <div class="compare-header">
+                    <div></div>
+                    <div>FEB (28 DÍAS)</div>
+                    <div class="mar-head">MAR (3 DÍAS)</div>
                 </div>
-                <div class="insight-item">
-                    <div class="insight-icon green">✓</div>
-                    <div class="insight-text"><strong>Branding ultra eficiente:</strong> CPC de $74 y CTR de 6,14%. La campaña de visitas al perfil está trayendo tráfico muy barato.</div>
+                <div class="compare-row">
+                    <div class="compare-label">Ventas netas</div>
+                    <div class="compare-val">$11,8M</div>
+                    <div class="compare-val green">$10,9M</div>
                 </div>
-                <div class="insight-item">
-                    <div class="insight-icon orange">!</div>
-                    <div class="insight-text"><strong>Descuentos subieron 190%.</strong> Se pasó de ~$247K a $716K en descuentos. Esto impacta directamente el margen y el ticket promedio (bajó 23%).</div>
+                <div class="compare-row">
+                    <div class="compare-label">Pedidos</div>
+                    <div class="compare-val">75</div>
+                    <div class="compare-val green">67</div>
                 </div>
-                <div class="insight-item">
-                    <div class="insight-icon orange">!</div>
-                    <div class="insight-text"><strong>Tasa de conversión a la baja (↓20%).</strong> Revisar landing pages y ofertas para mejorar el cierre de compra.</div>
+                <div class="compare-row">
+                    <div class="compare-label">Ticket promedio</div>
+                    <div class="compare-val">$158K</div>
+                    <div class="compare-val green">$163K</div>
                 </div>
-                <div class="insight-item">
-                    <div class="insight-icon green">✓</div>
-                    <div class="insight-text"><strong>Crop Top Mesh y Blusón Move Gris crecieron fuerte</strong> (+100% y +57%). Estos productos son candidatos a recibir más pauta dedicada.</div>
+                <div class="compare-row">
+                    <div class="compare-label">Inversión Meta</div>
+                    <div class="compare-val">$9,9M</div>
+                    <div class="compare-val green">$2,8M</div>
+                </div>
+                <div class="compare-row">
+                    <div class="compare-label">ROAS general</div>
+                    <div class="compare-val red">1,20x</div>
+                    <div class="compare-val green">3,89x</div>
+                </div>
+                <div class="compare-row">
+                    <div class="compare-label">Tasa conversión</div>
+                    <div class="compare-val red">0,27%</div>
+                    <div class="compare-val green">1,30%</div>
+                </div>
+                <div class="compare-row">
+                    <div class="compare-label">Descuentos</div>
+                    <div class="compare-val red">−$1,2M</div>
+                    <div class="compare-val green">$0</div>
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 8: CIERRE (DARK) -->
-        <div class="slide slide-dark" id="slide8" data-theme="dark">
+        <!-- SLIDE 9: MARZO CAMPAÑAS (LIGHT) -->
+        <div class="slide slide-light" id="slide9" data-theme="light">
+            <div class="section-tag">CAMPAÑAS &middot; MARZO</div>
+            <h2>Las campañas que están <span class="highlight">brillando</span></h2>
+            <p class="subtitle" style="margin-bottom: 10px;">$2,8M invertidos · ROAS promedio Meta: 3,65x</p>
+            <div class="campaigns-list">
+                <div class="campaign-card camp-best">
+                    <div class="camp-best-tag">MEJOR ROAS</div>
+                    <div class="camp-name">ABO Catálogos · IFW</div>
+                    <div class="camp-metrics">
+                        <div class="camp-metric">
+                            <div class="camp-metric-value">$305K</div>
+                            <div class="camp-metric-label">Inversión</div>
+                        </div>
+                        <div class="camp-metric">
+                            <div class="camp-metric-value">304</div>
+                            <div class="camp-metric-label">Clics</div>
+                        </div>
+                        <div class="camp-metric">
+                            <div class="camp-metric-value">13</div>
+                            <div class="camp-metric-label">Compras</div>
+                        </div>
+                        <div class="camp-roas">7,74x</div>
+                    </div>
+                </div>
+                <div class="campaign-card camp-best" style="border-color: #16a34a;">
+                    <div class="camp-best-tag">ESTRELLA</div>
+                    <div class="camp-name">ABO Públicos · Nuevos Videos</div>
+                    <div class="camp-metrics">
+                        <div class="camp-metric">
+                            <div class="camp-metric-value">$541K</div>
+                            <div class="camp-metric-label">Inversión</div>
+                        </div>
+                        <div class="camp-metric">
+                            <div class="camp-metric-value">687</div>
+                            <div class="camp-metric-label">Clics</div>
+                        </div>
+                        <div class="camp-metric">
+                            <div class="camp-metric-value">20</div>
+                            <div class="camp-metric-label">Compras</div>
+                        </div>
+                        <div class="camp-roas">6,77x</div>
+                    </div>
+                </div>
+                <div class="campaign-card">
+                    <div class="camp-name">CBO Hot Days</div>
+                    <div class="camp-metrics">
+                        <div class="camp-metric">
+                            <div class="camp-metric-value">$1,14M</div>
+                            <div class="camp-metric-label">Inversión</div>
+                        </div>
+                        <div class="camp-metric">
+                            <div class="camp-metric-value">1.442</div>
+                            <div class="camp-metric-label">Clics</div>
+                        </div>
+                        <div class="camp-metric">
+                            <div class="camp-metric-value">21</div>
+                            <div class="camp-metric-label">Compras</div>
+                        </div>
+                        <div class="camp-roas">2,91x</div>
+                    </div>
+                </div>
+                <div class="campaign-card">
+                    <div class="camp-name">ABO Públicos · IA LR</div>
+                    <div class="camp-metrics">
+                        <div class="camp-metric">
+                            <div class="camp-metric-value">$438K</div>
+                            <div class="camp-metric-label">Inversión</div>
+                        </div>
+                        <div class="camp-metric">
+                            <div class="camp-metric-value">583</div>
+                            <div class="camp-metric-label">Clics</div>
+                        </div>
+                        <div class="camp-metric">
+                            <div class="camp-metric-value">5</div>
+                            <div class="camp-metric-label">Compras</div>
+                        </div>
+                        <div class="camp-roas">1,65x</div>
+                    </div>
+                </div>
+                <div class="campaign-card">
+                    <div class="camp-name">Contenido Nuevo · Beisbolera</div>
+                    <div class="camp-metrics">
+                        <div class="camp-metric">
+                            <div class="camp-metric-value">$338K</div>
+                            <div class="camp-metric-label">Inversión</div>
+                        </div>
+                        <div class="camp-metric">
+                            <div class="camp-metric-value">428</div>
+                            <div class="camp-metric-label">Clics</div>
+                        </div>
+                        <div class="camp-metric">
+                            <div class="camp-metric-value">4</div>
+                            <div class="camp-metric-label">Compras</div>
+                        </div>
+                        <div class="camp-roas">1,32x</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: HALLAZGOS (LIGHT) -->
+        <div class="slide slide-light" id="slide10" data-theme="light">
+            <div class="section-tag">HALLAZGOS</div>
+            <h2>Qué nos dicen <span class="highlight">los datos</span></h2>
+            <div class="insights-list">
+                <div class="insight-item">
+                    <div class="insight-icon green">&#10003;</div>
+                    <div class="insight-text"><strong>Marzo arrancó con ROAS 3,9x.</strong> En 3 días, las ventas alcanzaron el 92% de todo febrero. Las campañas nuevas (Hot Days + Nuevos Videos) están funcionando.</div>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-icon green">&#10003;</div>
+                    <div class="insight-text"><strong>ABO Catálogos IFW: ROAS 7,74x en marzo</strong> (vs 1,26x en feb). El catálogo dinámico con remarketing sigue siendo el mejor conversor de toda la cuenta.</div>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-icon green">&#10003;</div>
+                    <div class="insight-text"><strong>$0 en descuentos en marzo.</strong> Toda la venta a precio full, mejorando margen vs febrero ($1,2M en descuentos). Blusón Move Black lidera con $1,06M.</div>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-icon orange">!</div>
+                    <div class="insight-text"><strong>En febrero se desactivaron campañas con $3,7M invertidos</strong> por ROAS bajo (0,08x y 0,80x). Esa inversión fue el mayor lastre del mes.</div>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-icon green">&#10003;</div>
+                    <div class="insight-text"><strong>Tasa de conversión 5x mayor en marzo</strong> (1,3% vs 0,27%). Los cambios en campañas y creativos están atrayendo tráfico más calificado.</div>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-icon orange">!</div>
+                    <div class="insight-text"><strong>Monitorear ticket promedio.</strong> Bajó de $189K (S1 feb) a $131K (S4 feb). En marzo está en $163K, pero hay que vigilar que no siga bajando.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 11: CIERRE (DARK) -->
+        <div class="slide slide-dark" id="slide11" data-theme="dark">
             <img src="logo-la-real.png" alt="LA REAL" style="width: 130px; margin-bottom: 30px; opacity: 0.9;">
             <div class="brand-name">IM FIT WORLD</div>
-            <h1>Semana <span class="highlight">17–24 Feb</span></h1>
-            <p class="subtitle" style="max-width: 600px; line-height: 1.7; margin-bottom: 30px;">
-                Invertimos <strong style="color:white">$2,2M</strong> en 7 campañas y generamos <strong style="color:white">$2,06M</strong> en ventas con un alcance de <strong style="color:white">128.864 personas</strong>.
+            <h1>Febrero + <span class="highlight">Marzo</span> 2026</h1>
+            <p class="subtitle" style="max-width: 650px; line-height: 1.7; margin-bottom: 30px;">
+                Febrero cerró en <strong style="color:white">$11,8M</strong> con ajustes importantes en campañas. Marzo arrancó con <strong style="color:white">$10,9M en 3 días</strong>, ROAS <strong style="color:white">3,9x</strong> y $0 en descuentos.
             </p>
             <div class="hero-pills">
-                <div class="hero-pill">Optimizar contenido video</div>
-                <div class="hero-pill">Escalar Beisbolera</div>
-                <div class="hero-pill">Revisar descuentos</div>
+                <div class="hero-pill">Escalar Nuevos Videos + Hot Days</div>
+                <div class="hero-pill">Mantener $0 descuentos</div>
+                <div class="hero-pill">Monitorear conversión y ticket</div>
             </div>
         </div>
 
         <!-- Navigation -->
         <div class="navigation">
-            <button class="nav-btn" id="btnPrev" onclick="prevSlide()">←</button>
-            <button class="nav-btn" id="btnNext" onclick="nextSlide()">→</button>
+            <button class="nav-btn" id="btnPrev" onclick="prevSlide()">&#8592;</button>
+            <button class="nav-btn" id="btnNext" onclick="nextSlide()">&#8594;</button>
         </div>
     </div>
 
     <script>
         let currentSlide = 1;
-        const totalSlides = 8;
+        const totalSlides = 11;
 
         function showSlide(n) {
             document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
@@ -820,7 +1004,6 @@
             document.getElementById('slideCounter').textContent = `${n} / ${totalSlides}`;
             document.getElementById('progress').style.width = `${(n / totalSlides) * 100}%`;
 
-            // Adapt nav button colors
             const theme = slide.getAttribute('data-theme');
             const prevBtn = document.getElementById('btnPrev');
             const nextBtn = document.getElementById('btnNext');
